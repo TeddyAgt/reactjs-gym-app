@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SCHEMES, WORKOUTS } from "../utils/swoldier";
+import Button from "./Button";
 import SectionWrapper from "./SectionWrapper";
 
 function Header(props) {
@@ -27,6 +28,28 @@ export default function Generator() {
         setShowModal(!showModal);
     }
 
+    function updateMuscles(muscleGroup) {
+        if (muscles.includes(muscleGroup)) {
+            setMuscles(muscles.filter((val) => val !== muscleGroup));
+            return;
+        }
+
+        if (muscles.length > 2) {
+            return;
+        }
+
+        if (poison !== "individual") {
+            setMuscles([muscleGroup]);
+            setShowModal(false);
+            return;
+        }
+
+        setMuscles([...muscles, muscleGroup]);
+        if (muscles.length === 2) {
+            setShowModal(false);
+        }
+    }
+
     return (
         <SectionWrapper
             header={"Generate your workout"}
@@ -41,10 +64,11 @@ export default function Generator() {
                     return (
                         <button
                             onClick={() => {
+                                setMuscles([]);
                                 setPoison(type);
                             }}
                             className={
-                                "bg-slate-950 border py-3 rounded-lg duration-200 hover:border-blue-600 capitalize " +
+                                "bg-slate-950 border py-3 px-4 rounded-lg duration-200 hover:border-blue-600 capitalize " +
                                 (type === poison
                                     ? "border-blue-600"
                                     : "border-blue-400")
@@ -65,10 +89,37 @@ export default function Generator() {
                 <button
                     onClick={toggleModal}
                     className="relative p-3 flex items-center justify-center">
-                    <p>Select muscle groups</p>
+                    <p className="capitalize">
+                        {muscles.length === 0
+                            ? "Select muscle groups"
+                            : muscles.join(" ")}
+                    </p>
                     <i className="fa-solid fa-caret-down absolute right-3 top-1/2 -translate-y-1/2"></i>
                 </button>
-                {showModal && <div>modal</div>}
+                {showModal && (
+                    <div className="flex flex-col px-3 pb-3">
+                        {(poison === "individual"
+                            ? WORKOUTS[poison]
+                            : Object.keys(WORKOUTS[poison])
+                        ).map((muscleGroup, muscleGroupIndex) => {
+                            return (
+                                <button
+                                    className={
+                                        "uppercase hover:text-blue-400 duration-200 " +
+                                        (muscles.includes(muscleGroup)
+                                            ? "text-blue-400"
+                                            : "")
+                                    }
+                                    key={muscleGroupIndex}
+                                    onClick={() => {
+                                        updateMuscles(muscleGroup);
+                                    }}>
+                                    {muscleGroup}
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
 
             <Header
@@ -84,7 +135,7 @@ export default function Generator() {
                                 setGoals(scheme);
                             }}
                             className={
-                                "bg-slate-950 border py-3 rounded-lg duration-200 hover:border-blue-600 capitalize " +
+                                "bg-slate-950 border py-3 px-4 rounded-lg duration-200 hover:border-blue-600 capitalize " +
                                 (scheme === goals
                                     ? "border-blue-600"
                                     : "border-blue-400")
@@ -95,6 +146,7 @@ export default function Generator() {
                     );
                 })}
             </div>
+            <Button text={"Formulate"} />
         </SectionWrapper>
     );
 }

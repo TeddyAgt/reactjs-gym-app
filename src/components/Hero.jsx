@@ -1,3 +1,5 @@
+import Button from "./Button";
+
 export default function Hero() {
     return (
         <section className="max-w-[800px] w-full mx-auto min-h-screen flex p-4 flex-col gap-10 items-center justify-center text-center">
@@ -19,9 +21,7 @@ export default function Hero() {
                 , afflicted with severe body dismorphia, unable to fit through
                 doors.
             </p>
-            <button className="px-8 py-4 rounded-md border-2 border-blue-400 bg-slate-950 blueShadow duration-200">
-                Accept & begin
-            </button>
+            <Button text={"Accept & begin"} />
         </section>
     );
 }
