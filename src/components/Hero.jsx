@@ -21,7 +21,10 @@ export default function Hero() {
                 , afflicted with severe body dismorphia, unable to fit through
                 doors.
             </p>
-            <Button text={"Accept & begin"} />
+            <Button
+                text={"Accept & begin"}
+                func={() => (window.location.href = "#generate")}
+            />
         </section>
     );
 }

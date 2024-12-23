@@ -6,6 +6,10 @@
     font-family: "Poppins", sans-serif;
 }
 
+heml {
+    scroll-behavior: smooth;
+}
+
 span {
     font-family: inherit;
     font-weight: inherit;
